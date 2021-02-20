@@ -22,7 +22,7 @@ const {middlewareGlobal, checkCsrfError, csrfMiddleware } = require('./src/middl
 
 app.use(express.urlencoded({extended:true})); //permitindo a leitura dos arquivos express
 app.use(express.static(path.resolve(__dirname, 'public'))); //utilizando o express.static permite que o express leia arquivos estaticos, como css
-//app.use(helmet());//utilizando helmet para evitar ataques de injeção de codigos
+app.use(helmet());//utilizando helmet para evitar ataques de injeção de codigos
 
 const sessionOption = session({
     secret: 'Jesus Te Ama',//frase secreta, pode ser qualquer uma
