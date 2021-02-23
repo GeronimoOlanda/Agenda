@@ -8,5 +8,6 @@ exports.index = (req, res, next) =>{
 //criando metodo de registro
 exports.register = (req, res) => {
     const login = new Login(req.body);
-    res.send(req.body);
+    login.register();
+    res.send(login.errors);
 }
