@@ -1,7 +1,12 @@
 exports.middlewareGlobal = (req, res, next) => {
-    res.locals.umaVariavelLocal = 'Estamos testando a variavel local';
+    res.locals.errors = req.flash('errors');//middle para controle dos erros
+    res.locals.success = req.flash('success');//middleware para controlle dos sucessos
     next();
 };
+
+exports.outroMiddleware = (req, res, next) =>{
+    next();
+}
 
 //fazendo verificação e previnindo que o erro apareça para o usuario, caso de erro, será renderizado o arquivo error.ejs
 //qualquer erro que ocorrer na aplicação
