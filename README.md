@@ -9,3 +9,7 @@ Projeto Agenda com o intuito de praticar e me aprofundar nas tecnologias(Nodejs,
 * Ejs
 * MongoDB
 * Validator
+* Bcryptjs
+
+### Outras
+* WebPack
