@@ -1,70 +1,82 @@
-const mongoose = require('mongoose'); //pacote do mongoose para conexao com o bd e criação das tabelas
-const validator = require('validator'); //pacote do validator para a validação dos campos email e password
-const bcrypyjs = require('bcryptjs'); //pacote utilizado para fazer encptografar a senha
+const mongoose = require('mongoose');
+const validator = require('validator');
+const bcryptjs = require('bcryptjs');
 
-//trabalhando com esquemas(regras de negocios)
-//estamos fazendo do jeito que queremos que esteja na base de dados
 const LoginSchema = new mongoose.Schema({
-    email: { type: String, required: true },
-    password: { type: String, required: true }
-    
-    
+  email: { type: String, required: true },
+  password: { type: String, required: true }
 });
 
 const LoginModel = mongoose.model('Login', LoginSchema);
 
-class Login{
-    constructor(body){
-        this.body = body;
-        this.errors = [];
-        this.user = null;
+class Login {
+  constructor(body) {
+    this.body = body;
+    this.errors = [];
+    this.user = null;
+  }
 
+  async login() {
+    this.valida();
+    if(this.errors.length > 0) return;
+    this.user = await LoginModel.findOne({ email: this.body.email });
+
+    if(!this.user) {
+      this.errors.push('Usuário não existe.');
+      return;
     }
 
-    async register(){
-        this.valida();
-        if(this.errors.length > 0) return;
+    if(!bcryptjs.compareSync(this.body.password, this.user.password)) {
+      this.errors.push('Senha inválida');
+      this.user = null;
+      return;
+    }
+  }
 
-           await this.userExists();
+  async register() {
+    this.valida();
+    if(this.errors.length > 0) return;
 
-        const salt = bcrypyjs.genSaltSync();//gerando um salt
-        this.body.password = bcrypyjs.hashSync(this.body.password, salt);//e fazendo o hash da senha
-        this.user = await LoginModel.create(this.body);
-}
+    await this.userExists();
 
-    async userExists(){
-        const user = await LoginModel.findOne({email: this.body.email});
-        if(user) this.errors.push('Usuario já Existe');
+    if(this.errors.length > 0) return;
+
+    const salt = bcryptjs.genSaltSync();
+    this.body.password = bcryptjs.hashSync(this.body.password, salt);
+
+    this.user = await LoginModel.create(this.body);
+  }
+
+  async userExists() {
+    this.user = await LoginModel.findOne({ email: this.body.email });
+    if(this.user) this.errors.push('Usuário já existe.');
+  }
+
+  valida() {
+    this.cleanUp();
+
+    // Validação
+    // O e-mail precisa ser válido
+    if(!validator.isEmail(this.body.email)) this.errors.push('E-mail inválido');
+
+    // A senha precisa ter entre 3 e 50
+    if(this.body.password.length < 3 || this.body.password.length > 50) {
+      this.errors.push('A senha precisa ter entre 3 e 50 caracteres.');
+    }
+  }
+
+  cleanUp() {
+    for(const key in this.body) {
+      if(typeof this.body[key] !== 'string') {
+        this.body[key] = '';
+      }
     }
 
-    //validacao dos dados
-    valida(){
-        this.cleanUp();
-
-        //validacão
-        //O E-mail precisa ser valido
-        if(!validator.isEmail(this.body.email)){ 
-            this.errors.push('E-mail invalido');
-        }
-        
-        // a Senha precisa ter entre 8 e 50 caracteres
-        if(this.body.password.length < 8 || this.body.password.length >= 50){
-            this.errors.push('A senha precisa ter entre 3 e 50 caracteres!');
-        }
-    }
-    //remove tudo que nao for uma string
-    cleanUp(){
-        for(const key in this.body){
-           if(typeof this.body[key] !== 'string'){
-                this.body[key] = '';//convertendo para uma string vazia
-           }
-        }
-        this.body = {
-            email: this.body.email,
-            password: this.body.password
-        }
-    }
-
+    this.body = {
+      email: this.body.email,
+      password: this.body.password
+    };
+  }
 }
 
 module.exports = Login;

@@ -53,6 +53,6 @@ app.set('view engine', 'ejs'); //adicionando a engine de view ejs no nosso proje
 //o app.on() diz que só vai ser executado quando o app.emit() emitir o sinal de pronto, como foi a mensagem passada
 app.on('pronto', () =>{
 //porta 3000
-app.listen(5050);
+app.listen(4000);
 })
 
