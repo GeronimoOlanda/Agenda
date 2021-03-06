@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const ContatoSchema = new mongoose.Schema({
-    titulo: {type: String, required: true},
-    descricao: String
+    nome: {type: String, required: true},
+    sobrenome: {type: String, required: false, default: ' '},
+    email: {type: String, required: false, default: ' '},
+    telefone: {type: String, required: false, default: ' '},
+    criadoEm: {type: Date, default: Date.now},    
 });
 
 const ContatoModel = mongoose.model('Contato', ContatoSchema);
@@ -23,11 +26,8 @@ Contato.prototype.valida = function() {
     // Validação
     // O e-mail precisa ser válido
     if(!validator.isEmail(this.body.email)) this.errors.push('E-mail inválido');
+    if(!this.body.nome)this.errors.push('Nome é um campo Obrigatorio.');
 
-    // A senha precisa ter entre 3 e 50
-    if(this.body.password.length < 3 || this.body.password.length > 50) {
-      this.errors.push('A senha precisa ter entre 3 e 50 caracteres.');
-    }
   }
 
 Contato.prototype.cleanUp = function() {
@@ -38,8 +38,11 @@ Contato.prototype.cleanUp = function() {
     }
 
     this.body = {
+      nome: this.body.nome,
+      sobrenome: this.body.sobrenome,
       email: this.body.email,
-      password: this.body.password
+      telefone: this.body.telefone,
+      
     };
   }
 
