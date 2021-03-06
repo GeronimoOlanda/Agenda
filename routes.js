@@ -6,7 +6,7 @@ const contatoController = require('./src/controllers/contatoController');
 
 const {loginRequired} = require('./src/middlewares/middleware');
 //rotas home
-routes.get('/',paginaController.index);
+routes.get('/', paginaController.index);
 
 //rotas de login
 routes.get('/login/index', loginController.index);
@@ -16,5 +16,5 @@ routes.get('/login/logout', loginController.logout);
 
 //rotas de contato
 routes.get('/contato/index',loginRequired, contatoController.index);
-
+routes.post('/contatos/register',contatoController.register)
 module.exports = routes;
