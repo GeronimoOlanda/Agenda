@@ -6,7 +6,8 @@ const mongoose = require('mongoose'); //adicionando mongoose no projeto, ele vai
 
 mongoose.connect(process.env.CONNECTIONSTRING, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false
     }) //conectando ao banco de dados mongodb
     .then(() => {
         app.emit('pronto');

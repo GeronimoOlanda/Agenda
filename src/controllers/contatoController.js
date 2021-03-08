@@ -64,6 +64,6 @@ exports.edit = async function(req, res) {
     if (!contato) return res.render('404');
     
     req.flash('success', 'Contato apagado com sucesso.');
-    req.session.save(() => res.redirect('/'));
+    req.session.save(() => res.redirect('index'));
     return;
   }
