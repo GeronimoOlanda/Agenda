@@ -21,4 +21,7 @@ routes.get('/contato/index/:id',contatoController.editIndex); //parametro de url
 
 //rota de edição
 routes.post('/contato/edit/:id',contatoController.edit); //parametro de url
+
+//rota de exclusao
+routes.get('/contato/delete/:id',contatoController.delete); //parametro de url
 module.exports = routes;
