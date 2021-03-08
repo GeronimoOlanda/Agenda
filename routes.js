@@ -20,5 +20,5 @@ routes.post('/contato/register',contatoController.register);
 routes.get('/contato/index/:id',contatoController.editIndex); //parametro de url
 
 //rota de edição
-routes.post('/contato/edit/:id',contatoController.editIndex); //parametro de url
+routes.post('/contato/edit/:id',contatoController.edit); //parametro de url
 module.exports = routes;
