@@ -12,10 +12,13 @@ routes.get('/', paginaController.index);
 routes.get('/login/index', loginController.index);
 routes.post('/login/register', loginController.register);
 routes.post('/login/login', loginController.login);
-routes.get('/login/logout', loginController.logout);
+routes.get('/login/logout', loginController.logout); 
 
 //rotas de contato
 routes.get('/contato/index',loginRequired, contatoController.index);
 routes.post('/contato/register',contatoController.register);
 routes.get('/contato/index/:id',contatoController.editIndex); //parametro de url
+
+//rota de edição
+routes.post('/contato/edit/:id',contatoController.editIndex); //parametro de url
 module.exports = routes;
