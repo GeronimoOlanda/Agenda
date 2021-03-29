@@ -6,7 +6,7 @@ Projeto Agenda com o intuito de praticar e me aprofundar nas tecnologias(Nodejs,
 ### O principal foco é treinar as seguintes habilidades:
 * JavaScript(ES5, ES6, ES7, ES8)
 * NodeJs
-* Express
+* ExpressJs
 * Ejs
 * MongoDB
 * Validator
